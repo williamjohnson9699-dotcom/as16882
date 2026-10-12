@@ -1,0 +1,18 @@
+-- 店铺表
+CREATE TABLE IF NOT EXISTS `shop` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '店铺ID',
+  `name` VARCHAR(255) NOT NULL COMMENT '店铺名称',
+  `logo` VARCHAR(500) COMMENT '店铺图标URL',
+  `level` INT NOT NULL DEFAULT 1 COMMENT '店铺等级',
+  `rating` DECIMAL(3, 1) NOT NULL DEFAULT 5.0 COMMENT '店铺评分',
+  `follow_count` INT NOT NULL DEFAULT 0 COMMENT '关注数量',
+  `views` INT NOT NULL DEFAULT 0 COMMENT '浏览量',
+  `credit_score` INT NOT NULL DEFAULT 100 COMMENT '信誉分',
+  `user_id` BIGINT NOT NULL COMMENT '店主用户ID',
+  `status` TINYINT NOT NULL DEFAULT 1 COMMENT '店铺状态：0-关闭，1-营业',
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺表';

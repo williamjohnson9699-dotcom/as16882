@@ -1,0 +1,46 @@
+allprojects {
+    repositories {
+        maven { url "https://maven.aliyun.com/repository/google" }
+        maven { url "https://maven.aliyun.com/repository/public" }
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+
+    // Force all subprojects to use Java 17 and Android SDK 36
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdk 36
+
+                // Auto-add namespace for plugins that don't have it
+                if (namespace == null) {
+                    namespace = "com.usdt_mall.${project.name.replace('-', '_')}"
+                }
+
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+
+        // Force Kotlin tasks to use JVM target 17
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

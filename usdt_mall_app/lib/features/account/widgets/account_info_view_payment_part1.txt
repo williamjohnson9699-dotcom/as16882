@@ -1,0 +1,37 @@
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(widget.hasPaymentPassword ? "修改支付密码" : "设置支付密码"),
+      content: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // 如果已有支付密码，显示旧密码输入框
+              if (widget.hasPaymentPassword) ...[
+                TextFormField(
+                  controller: _oldPasswordController,
+                  obscureText: _obscureOldPassword,
+                  decoration: InputDecoration(
+                    labelText: "旧支付密码",
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(_obscureOldPassword ? Icons.visibility : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _obscureOldPassword = \!_obscureOldPassword;
+                        });
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "请输入旧支付密码";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+              ],

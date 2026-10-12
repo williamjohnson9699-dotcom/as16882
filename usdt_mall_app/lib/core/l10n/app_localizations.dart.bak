@@ -1,0 +1,132 @@
+import 'package:flutter/material.dart';
+
+/// 支持的语言
+enum SupportedLocale {
+  zhCN('zh', 'CN', '中文'),
+  enUS('en', 'US', 'English'),
+  es('es', 'ES', 'Español'),
+  ja('ja', 'JP', '日本語'),
+  fr('fr', 'FR', 'Français');
+
+  final String languageCode;
+  final String countryCode;
+  final String label;
+
+  const SupportedLocale(this.languageCode, this.countryCode, this.label);
+
+  Locale get locale => Locale(languageCode, countryCode);
+
+  static SupportedLocale fromLocale(Locale locale) {
+    return SupportedLocale.values.firstWhere(
+      (l) => l.languageCode == locale.languageCode,
+      orElse: () => SupportedLocale.zhCN,
+    );
+  }
+}
+
+/// 国际化文本
+class AppLocalizations {
+  final Locale locale;
+
+  AppLocalizations(this.locale);
+
+  static AppLocalizations of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
+
+  static final Map<String, Map<String, String>> _localizedValues = {
+    'zh_CN': {
+      'app_name': 'USDT商城',
+      'join_now': '进入商城',
+      'welcome_title': '欢迎来到USDT商城',
+      'welcome_subtitle': '安全、便捷的数字货币交易平台',
+      'feature_1_title': '安全可靠',
+      'feature_1_desc': '多重加密保护，资金安全有保障',
+      'feature_2_title': '快速交易',
+      'feature_2_desc': '实时到账，交易便捷高效',
+      'feature_3_title': '全球服务',
+      'feature_3_desc': '支持多国语言，服务全球用户',
+    },
+    'en_US': {
+      'app_name': 'USDT Mall',
+      'join_now': 'Enter Mall',
+      'welcome_title': 'Welcome to USDT Mall',
+      'welcome_subtitle': 'Safe and convenient digital currency trading platform',
+      'feature_1_title': 'Safe & Secure',
+      'feature_1_desc': 'Multiple encryption protection, fund security guaranteed',
+      'feature_2_title': 'Fast Trading',
+      'feature_2_desc': 'Real-time arrival, convenient and efficient trading',
+      'feature_3_title': 'Global Service',
+      'feature_3_desc': 'Support multiple languages, serve global users',
+    },
+    'es_ES': {
+      'app_name': 'USDT Mall',
+      'join_now': 'Entrar al Centro',
+      'welcome_title': 'Bienvenido a USDT Mall',
+      'welcome_subtitle': 'Plataforma de comercio de criptomonedas segura y conveniente',
+      'feature_1_title': 'Seguro y Confiable',
+      'feature_1_desc': 'Protección de cifrado múltiple, seguridad de fondos garantizada',
+      'feature_2_title': 'Comercio Rápido',
+      'feature_2_desc': 'Llegada en tiempo real, comercio conveniente y eficiente',
+      'feature_3_title': 'Servicio Global',
+      'feature_3_desc': 'Soporte de múltiples idiomas, servicio a usuarios globales',
+    },
+    'ja_JP': {
+      'app_name': 'USDTモール',
+      'join_now': 'モールに入る',
+      'welcome_title': 'USDTモールへようこそ',
+      'welcome_subtitle': '安全で便利なデジタル通貨取引プラットフォーム',
+      'feature_1_title': '安全で信頼性',
+      'feature_1_desc': '多重暗号化保護、資金の安全性を保証',
+      'feature_2_title': '高速取引',
+      'feature_2_desc': 'リアルタイム着金、便利で効率的な取引',
+      'feature_3_title': 'グローバルサービス',
+      'feature_3_desc': '多言語対応、世界中のユーザーにサービスを提供',
+    },
+    'fr_FR': {
+      'app_name': 'USDT Mall',
+      'join_now': 'Entrer au Centre',
+      'welcome_title': 'Bienvenue sur USDT Mall',
+      'welcome_subtitle': 'Plateforme de trading de crypto-monnaie sûre et pratique',
+      'feature_1_title': 'Sûr et Fiable',
+      'feature_1_desc': 'Protection par cryptage multiple, sécurité des fonds garantie',
+      'feature_2_title': 'Trading Rapide',
+      'feature_2_desc': 'Arrivée en temps réel, trading pratique et efficace',
+      'feature_3_title': 'Service Mondial',
+      'feature_3_desc': 'Support multilingue, service aux utilisateurs du monde entier',
+    },
+  };
+
+  String translate(String key) {
+    final localeKey = '${locale.languageCode}_${locale.countryCode}';
+    return _localizedValues[localeKey]?[key] ?? key;
+  }
+
+  String get appName => translate('app_name');
+  String get joinNow => translate('join_now');
+  String get welcomeTitle => translate('welcome_title');
+  String get welcomeSubtitle => translate('welcome_subtitle');
+}
+
+/// 国际化代理
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) {
+    return SupportedLocale.values
+        .any((l) => l.languageCode == locale.languageCode);
+  }
+
+  @override
+  Future<AppLocalizations> load(Locale locale) async {
+    return AppLocalizations(locale);
+  }
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
